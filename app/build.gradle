@@ -21,6 +21,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    buildTypes.each {
+        it.buildConfigField 'String', 'IMDB_API_TOKEN', imdb_api_key
+    }
     dataBinding {
         enabled true
     }
