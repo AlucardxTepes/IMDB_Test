@@ -5,7 +5,7 @@ import okhttp3.Interceptor
 import okhttp3.Response
 
 /**
- * This interceptor includes the API_KEY to every request (Required to use the IMDB API)
+ * This interceptor includes the API_KEY with every HTTP request (Required to use the IMDB API)
  */
 class TokenInterceptor : Interceptor {
 

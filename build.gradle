@@ -20,7 +20,7 @@ buildscript {
         targetSdkVersion = 28
 
         // App dependencies
-        retrofitVersion = '2.5.0'
+        retrofitVersion = '2.6.0'
         daggerVersion = '2.17'
         androidXTestVersion = '1.1.1'
         constraintLayoutVersion = '1.1.3'

@@ -11,10 +11,10 @@ import retrofit2.Retrofit
 import retrofit2.converter.jackson.JacksonConverterFactory
 import java.util.concurrent.TimeUnit
 
+const val IMDB_BASE_URL = "https://api.themoviedb.org/3/"
+
 @Module
 class NetworkModule {
-
-    private val IMDB_BASE_URL = "https://api.themoviedb.org/3"
 
     @Reusable
     @Provides
