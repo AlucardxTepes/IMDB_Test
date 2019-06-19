@@ -1,6 +1,6 @@
 package com.pantaleon.imb_test.network
 
-import com.pantaleon.imb_test.model.Movie
+import com.pantaleon.imb_test.data.model.MovieListResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -12,7 +12,7 @@ interface MovieApi {
      */
     @GET("discover/movie")
     suspend fun findMoviesByYear(@Query("primary_release_year") year: Int,
-                         @Query("sort_by") sortProperty: String): List<Movie>
+                         @Query("sort_by") sortProperty: String): MovieListResponse
 
     // TODO: Add movie detail endpoint
 

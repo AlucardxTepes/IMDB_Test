@@ -1,6 +1,7 @@
 package com.pantaleon.imb_test.di
 
 import com.pantaleon.imb_test.MainActivity
+import com.pantaleon.imb_test.ui.main.PlaceholderFragment
 import dagger.Component
 import javax.inject.Singleton
 
@@ -8,4 +9,5 @@ import javax.inject.Singleton
 @Component(modules = [NetworkModule::class])
 interface ApplicationComponent {
     fun inject(mainActivity: MainActivity)
+    fun inject(mainFragment: PlaceholderFragment)
 }

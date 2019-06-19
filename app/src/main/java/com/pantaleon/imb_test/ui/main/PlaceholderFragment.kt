@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import com.pantaleon.imb_test.MoviesApp
 import com.pantaleon.imb_test.databinding.FragmentMainBinding
+import javax.inject.Inject
 
 /**
  * A placeholder fragment containing a simple view.
@@ -15,9 +17,15 @@ class PlaceholderFragment : Fragment() {
 
     private lateinit var viewModel: MoviesViewModel
 
+    @Inject
+    lateinit var viewModelFactory: MoviesViewModelFactory
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(MoviesViewModel::class.java).apply {
+        // Inject Dagger Dependencies
+        MoviesApp.getAppComponent(context!!).inject(this)
+        // Init viewModel
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(MoviesViewModel::class.java).apply {
             setIndex(arguments?.getInt(ARG_SECTION_NUMBER) ?: 1)
         }
     }
