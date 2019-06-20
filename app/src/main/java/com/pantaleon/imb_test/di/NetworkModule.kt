@@ -13,9 +13,8 @@ import retrofit2.Retrofit
 import retrofit2.converter.jackson.JacksonConverterFactory
 import java.util.concurrent.TimeUnit
 
-
-
 const val IMDB_BASE_URL = "https://api.themoviedb.org/3/"
+const val IMDB_BASE_IMAGE_URL = "https://image.tmdb.org/t/p"
 
 @Module
 class NetworkModule {

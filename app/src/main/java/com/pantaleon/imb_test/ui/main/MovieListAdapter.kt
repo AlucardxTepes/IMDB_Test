@@ -4,8 +4,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.pantaleon.imb_test.R
 import com.pantaleon.imb_test.data.model.Movie
+import com.pantaleon.imb_test.di.IMDB_BASE_IMAGE_URL
 import com.pantaleon.imb_test.util.BindableAdapter
 import kotlinx.android.synthetic.main.movie_item.view.*
 
@@ -38,5 +40,9 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bind(movie: Movie) {
         itemView.title.text = movie.title
         itemView.rating.text = movie.voteAverage.toString()
+        itemView.ratingBar.rating = movie.voteAverage/2
+        Glide.with(itemView.context)
+            .load(IMDB_BASE_IMAGE_URL + "/w200" + movie.posterPath)
+            .into(itemView.movieImageView)
     }
 }
