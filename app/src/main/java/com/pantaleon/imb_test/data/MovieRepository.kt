@@ -10,16 +10,15 @@ import javax.inject.Singleton
 @Singleton
 class MovieRepository @Inject constructor(private val movieApi: MovieApi) {
 
-    fun getMovies(year: Int): MutableLiveData<List<Movie>> {
+    fun getMovies(year: Int, sorting: String = "popularity"): MutableLiveData<List<Movie>> {
         val data = MutableLiveData<List<Movie>>()
 
         runBlocking {
-            data.value = movieApi.findMoviesByYear(year, "popularity.desc").results
+            // Default sorting by popularity
+            data.value = movieApi.findMoviesByYear(year, "${sorting.toLowerCase()}.desc").results
             // TODO: Handle error case
             data.value?.forEach(::println)
-//            data.value?.forEach { Log.d("HTTPGET", it.toString()) }
         }
-
         return data
     }
 }

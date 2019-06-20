@@ -1,17 +1,20 @@
 package com.pantaleon.imb_test.ui.main
 
+import android.graphics.Color
+import android.graphics.PorterDuff
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.ArrayAdapter
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.pantaleon.imb_test.MoviesApp
+import com.pantaleon.imb_test.R
 import com.pantaleon.imb_test.data.model.Movie
-import com.pantaleon.imb_test.databinding.FragmentMainBinding
-import kotlinx.android.synthetic.main.fragment_main.view.*
+import com.pantaleon.imb_test.databinding.FragmentMoviesBinding
+import kotlinx.android.synthetic.main.fragment_movies.view.*
 import javax.inject.Inject
 
 /**
@@ -20,12 +23,14 @@ import javax.inject.Inject
 class MoviesFragment : Fragment(), MovieItemActionDelegate {
 
     private lateinit var viewModel: MoviesViewModel
+    private var sortDialog: AlertDialog? = null
 
     @Inject
     lateinit var viewModelFactory: MoviesViewModelFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
         // Inject Dagger Dependencies
         MoviesApp.getAppComponent(context!!).inject(this)
         // Init viewModel
@@ -36,7 +41,7 @@ class MoviesFragment : Fragment(), MovieItemActionDelegate {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = FragmentMainBinding.inflate(inflater, container, false)
+        val binding = FragmentMoviesBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
         binding.viewmodel = viewModel
         return binding.root
@@ -52,8 +57,49 @@ class MoviesFragment : Fragment(), MovieItemActionDelegate {
     }
 
     override fun onMovieClicked(movie: Movie) {
-        val action =  MoviesFragmentDirections.toMovieDetail(movie.id.toInt(), movie.title, movie.backdropPath)
+        val action = MoviesFragmentDirections.toMovieDetail(movie.id.toInt(), movie.title, movie.backdropPath ?: movie.posterPath ?: "")
         findNavController().navigate(action)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater?.inflate(R.menu.menu_movies_fragment, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.menu_item_search -> return true
+            R.id.menu_item_sort -> {
+                showSortDialog()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu?) {
+        super.onPrepareOptionsMenu(menu)
+        // Tint menu items white
+        menu?.findItem(R.id.menu_item_sort)?.icon?.mutate()?.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP)
+        menu?.findItem(R.id.menu_item_search)?.icon?.mutate()?.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP)
+    }
+
+    private fun showSortDialog() {
+        if (sortDialog == null) {
+            val builder = AlertDialog.Builder(context!!)
+
+            // Populate search options
+            val arrayAdapter = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1)
+            arrayAdapter.addAll("Popularity", "Title", "Rating", "Release Date")
+
+            builder.setTitle(getString(R.string.action_sort))
+            builder.setAdapter(arrayAdapter) { _, which ->
+                viewModel.sortBy(arrayAdapter.getItem(which))
+            }
+            sortDialog = builder.show()
+        } else {
+            sortDialog?.show()
+        }
     }
 }
 

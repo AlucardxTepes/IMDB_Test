@@ -46,9 +46,15 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             title.text = movie.title
             rating.text = movie.voteAverage.toString()
             ratingBar.rating = movie.voteAverage / 2
-            Glide.with(context)
-                .load(IMDB_BASE_IMAGE_URL + "/w200" + movie.posterPath)
-                .into(movieImageView)
+            if (movie.posterPath != null) {
+                Glide.with(context)
+                    .load(IMDB_BASE_IMAGE_URL + "/w200" + movie.posterPath)
+                    .into(movieImageView)
+            } else {
+                Glide.with(context)
+                    .load(context.getDrawable(R.drawable.movie_placeholder))
+                    .into(movieImageView)
+            }
         }
     }
 }

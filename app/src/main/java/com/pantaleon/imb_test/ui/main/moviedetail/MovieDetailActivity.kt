@@ -29,8 +29,14 @@ class MovieDetailActivity : AppCompatActivity() {
         val movieBackdropPath = safeArgs.movieBackdropPath
         Log.d("Detail Activity", "Movie ID: $movieId\nMovieTitle: $movieTitle")
 
-        Glide.with(this)
-            .load("$IMDB_BASE_IMAGE_URL/w500$movieBackdropPath")
-            .into(movieBackdrop)
+        if (movieBackdropPath.isEmpty()) {
+            Glide.with(this)
+                .load(getDrawable(R.drawable.movie_placeholder))
+                .into(movieBackdrop)
+        } else {
+            Glide.with(this)
+                .load("$IMDB_BASE_IMAGE_URL/w500$movieBackdropPath")
+                .into(movieBackdrop)
+        }
     }
 }
