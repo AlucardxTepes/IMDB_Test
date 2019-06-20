@@ -38,11 +38,13 @@ class MovieListAdapter : RecyclerView.Adapter<MovieViewHolder>(), BindableAdapte
 
 class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bind(movie: Movie) {
-        itemView.title.text = movie.title
-        itemView.rating.text = movie.voteAverage.toString()
-        itemView.ratingBar.rating = movie.voteAverage/2
-        Glide.with(itemView.context)
-            .load(IMDB_BASE_IMAGE_URL + "/w200" + movie.posterPath)
-            .into(itemView.movieImageView)
+        with(itemView) {
+            title.text = movie.title
+            rating.text = movie.voteAverage.toString()
+            ratingBar.rating = movie.voteAverage / 2
+            Glide.with(context)
+                .load(IMDB_BASE_IMAGE_URL + "/w200" + movie.posterPath)
+                .into(movieImageView)
+        }
     }
 }
