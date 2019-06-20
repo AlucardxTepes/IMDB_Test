@@ -6,16 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.pantaleon.imb_test.MoviesApp
+import com.pantaleon.imb_test.data.model.Movie
 import com.pantaleon.imb_test.databinding.FragmentMainBinding
 import kotlinx.android.synthetic.main.fragment_main.view.*
 import javax.inject.Inject
 
 /**
- * A placeholder fragment containing a simple view.
+ * Fragment containing Movies List for current year
  */
-class MoviesFragment : Fragment() {
+class MoviesFragment : Fragment(), MovieItemActionDelegate {
 
     private lateinit var viewModel: MoviesViewModel
 
@@ -27,9 +29,7 @@ class MoviesFragment : Fragment() {
         // Inject Dagger Dependencies
         MoviesApp.getAppComponent(context!!).inject(this)
         // Init viewModel
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(MoviesViewModel::class.java).apply {
-            setIndex(arguments?.getInt(ARG_SECTION_NUMBER) ?: 1)
-        }
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(MoviesViewModel::class.java)
     }
 
     override fun onCreateView(
@@ -46,29 +46,17 @@ class MoviesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         // Init RecyclerView
         with(view.recycler_view) {
-            adapter = MovieListAdapter()
+            adapter = MovieListAdapter(this@MoviesFragment)
             layoutManager = GridLayoutManager(context, 2)
         }
     }
 
-    companion object {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private const val ARG_SECTION_NUMBER = "section_number"
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        @JvmStatic
-        fun newInstance(sectionNumber: Int): MoviesFragment {
-            return MoviesFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(ARG_SECTION_NUMBER, sectionNumber)
-                }
-            }
-        }
+    override fun onMovieClicked(movie: Movie) {
+        // Use Navigation action and include movie ID as argument
+        findNavController().navigate(MoviesFragmentDirections.toMovieDetail(movie.id.toInt()))
     }
+}
+
+interface MovieItemActionDelegate {
+    fun onMovieClicked(movie: Movie)
 }

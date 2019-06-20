@@ -8,10 +8,25 @@
     <fragment
         android:id="@+id/moviesFragment"
         android:name="com.pantaleon.imb_test.ui.main.MoviesFragment"
-        android:label="MoviesFragment"/>
+        android:label="MoviesFragment">
+        <action
+            android:id="@+id/toMovieDetail"
+            app:destination="@id/movieDetailActivity" />
+    </fragment>
     <fragment
         android:id="@+id/favoritesFragment"
         android:name="com.pantaleon.imb_test.FavoritesFragment"
         android:label="fragment_favorites"
         tools:layout="@layout/fragment_favorites" />
+    <activity
+        android:id="@+id/movieDetailActivity"
+        android:name="com.pantaleon.imb_test.ui.main.moviedetail.MovieDetailActivity"
+        android:label="content_movie_detail"
+        tools:layout="@layout/content_movie_detail">
+        <argument
+            android:name="movieId"
+            app:argType="integer"
+            android:defaultValue="0" />
+    </activity>
+
 </navigation>

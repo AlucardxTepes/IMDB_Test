@@ -12,7 +12,8 @@ import com.pantaleon.imb_test.util.BindableAdapter
 import kotlinx.android.synthetic.main.movie_item.view.*
 
 
-class MovieListAdapter : RecyclerView.Adapter<MovieViewHolder>(), BindableAdapter<Movie> {
+class MovieListAdapter(private val actionDelegate: MovieItemActionDelegate) : RecyclerView.Adapter<MovieViewHolder>(),
+    BindableAdapter<Movie> {
 
     private var data = emptyList<Movie>()
 
@@ -25,6 +26,9 @@ class MovieListAdapter : RecyclerView.Adapter<MovieViewHolder>(), BindableAdapte
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         holder.bind(data[position])
+        holder.itemView.setOnClickListener {
+            actionDelegate.onMovieClicked(data[position])
+        }
     }
 
     /**
