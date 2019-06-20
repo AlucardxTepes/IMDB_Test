@@ -22,11 +22,18 @@
         android:id="@+id/movieDetailActivity"
         android:name="com.pantaleon.imb_test.ui.main.moviedetail.MovieDetailActivity"
         android:label="content_movie_detail"
-        tools:layout="@layout/content_movie_detail">
+        tools:layout="@layout/activity_movie_detail">
         <argument
             android:name="movieId"
             app:argType="integer"
             android:defaultValue="0" />
+        <argument
+            android:name="movieTitle"
+            app:argType="string"
+            android:defaultValue="Movie Details" />
+        <argument
+            android:name="movieBackdropPath"
+            app:argType="string"/>
     </activity>
 
 </navigation>

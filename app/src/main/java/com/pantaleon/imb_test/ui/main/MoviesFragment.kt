@@ -52,8 +52,8 @@ class MoviesFragment : Fragment(), MovieItemActionDelegate {
     }
 
     override fun onMovieClicked(movie: Movie) {
-        // Use Navigation action and include movie ID as argument
-        findNavController().navigate(MoviesFragmentDirections.toMovieDetail(movie.id.toInt()))
+        val action =  MoviesFragmentDirections.toMovieDetail(movie.id.toInt(), movie.title, movie.backdropPath)
+        findNavController().navigate(action)
     }
 }
 

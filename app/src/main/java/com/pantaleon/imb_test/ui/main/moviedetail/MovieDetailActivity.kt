@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.navArgs
+import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.pantaleon.imb_test.R
+import com.pantaleon.imb_test.di.IMDB_BASE_IMAGE_URL
 import kotlinx.android.synthetic.main.activity_movie_detail.*
 
 class MovieDetailActivity : AppCompatActivity() {
@@ -23,6 +25,12 @@ class MovieDetailActivity : AppCompatActivity() {
         // retrieve args from navigation component
         val safeArgs: MovieDetailActivityArgs by navArgs()
         val movieId = safeArgs.movieId
-        Log.d("Detail Activity", "Movie ID: $movieId")
+        val movieTitle = safeArgs.movieTitle
+        val movieBackdropPath = safeArgs.movieBackdropPath
+        Log.d("Detail Activity", "Movie ID: $movieId\nMovieTitle: $movieTitle")
+
+        Glide.with(this)
+            .load("$IMDB_BASE_IMAGE_URL/w500$movieBackdropPath")
+            .into(movieBackdrop)
     }
 }
