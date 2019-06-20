@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Grid layout columns for landscape orientation-->
+    <integer name="movie_grid_columns">4</integer>
+</resources>

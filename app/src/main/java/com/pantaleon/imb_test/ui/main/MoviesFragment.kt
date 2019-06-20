@@ -53,7 +53,7 @@ class MoviesFragment : Fragment(), MovieItemActionDelegate {
         // Init RecyclerView
         with(view.recycler_view) {
             adapter = MovieListAdapter(this@MoviesFragment)
-            layoutManager = GridLayoutManager(context, 2)
+            layoutManager = GridLayoutManager(context, resources.getInteger(R.integer.movie_grid_columns))
         }
     }
 
