@@ -6,14 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.GridLayoutManager
 import com.pantaleon.imb_test.MoviesApp
 import com.pantaleon.imb_test.databinding.FragmentMainBinding
+import kotlinx.android.synthetic.main.fragment_main.view.*
 import javax.inject.Inject
 
 /**
  * A placeholder fragment containing a simple view.
  */
-class PlaceholderFragment : Fragment() {
+class MoviesFragment : Fragment() {
 
     private lateinit var viewModel: MoviesViewModel
 
@@ -40,6 +42,15 @@ class PlaceholderFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        // Init RecyclerView
+        with(view.recycler_view) {
+            adapter = MovieListAdapter()
+            layoutManager = GridLayoutManager(context, 2)
+        }
+    }
+
     companion object {
         /**
          * The fragment argument representing the section number for this
@@ -52,8 +63,8 @@ class PlaceholderFragment : Fragment() {
          * number.
          */
         @JvmStatic
-        fun newInstance(sectionNumber: Int): PlaceholderFragment {
-            return PlaceholderFragment().apply {
+        fun newInstance(sectionNumber: Int): MoviesFragment {
+            return MoviesFragment().apply {
                 arguments = Bundle().apply {
                     putInt(ARG_SECTION_NUMBER, sectionNumber)
                 }
