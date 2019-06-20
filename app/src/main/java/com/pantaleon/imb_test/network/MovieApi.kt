@@ -16,5 +16,10 @@ interface MovieApi {
 
     // TODO: Add movie detail endpoint
 
-    // TODO: Add search by name endpoint
+    /**
+     * Performs movie search by provided query string
+     */
+    @GET("search/movie")
+    suspend fun searchMovies(@Query("query") value: String): MovieListResponse
+
 }

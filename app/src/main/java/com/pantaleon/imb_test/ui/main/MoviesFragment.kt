@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -57,18 +58,22 @@ class MoviesFragment : Fragment(), MovieItemActionDelegate {
     }
 
     override fun onMovieClicked(movie: Movie) {
-        val action = MoviesFragmentDirections.toMovieDetail(movie.id.toInt(), movie.title, movie.backdropPath ?: movie.posterPath ?: "")
+        val action = MoviesFragmentDirections.toMovieDetail(
+            movie.id.toInt(),
+            movie.title,
+            movie.backdropPath ?: movie.posterPath ?: ""
+        )
         findNavController().navigate(action)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         super.onCreateOptionsMenu(menu, inflater)
         inflater?.inflate(R.menu.menu_movies_fragment, menu)
+        initSearchView(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
-            R.id.menu_item_search -> return true
             R.id.menu_item_sort -> {
                 showSortDialog()
                 return true
@@ -100,6 +105,30 @@ class MoviesFragment : Fragment(), MovieItemActionDelegate {
         } else {
             sortDialog?.show()
         }
+    }
+
+    /**
+     * Initializes searchView to forward text events to ViewModel
+     */
+    private fun initSearchView(menu: Menu?) {
+        val searchView = menu?.findItem(R.id.menu_item_search)?.actionView as SearchView
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                query?.let {
+                    viewModel.search(it)
+                }
+                searchView.clearFocus()
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText.isNullOrEmpty()) {
+                    searchView.clearFocus()
+                }
+                return false
+            }
+        })
     }
 }
 

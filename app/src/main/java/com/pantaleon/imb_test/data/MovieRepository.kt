@@ -21,4 +21,15 @@ class MovieRepository @Inject constructor(private val movieApi: MovieApi) {
         }
         return data
     }
+
+    fun search(query: String): MutableLiveData<List<Movie>> {
+        val data = MutableLiveData<List<Movie>>()
+
+        runBlocking {
+            data.value = movieApi.searchMovies(query).results
+            // TODO: Handle error case
+            data.value?.forEach(::println)
+        }
+        return data
+    }
 }

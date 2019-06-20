@@ -14,7 +14,7 @@ class MoviesViewModel(private val movieRepository: MovieRepository) : ViewModel(
     private var currentSorting = "popularity"
 
     fun sortBy(sorting: String) {
-        if (currentSorting.toLowerCase() != sorting.toLowerCase()) {
+        if (currentSorting.toLowerCase() != sorting.toLowerCase()) { // Avoid running if already sorted
             // Convert "Rating" to vote_average, "Release Date" to "release_date" to match API format
             currentSorting = sorting.toLowerCase()
             when (sorting) {
@@ -22,8 +22,13 @@ class MoviesViewModel(private val movieRepository: MovieRepository) : ViewModel(
                 "release date" -> currentSorting = "release_date"
             }
             movies.value = movieRepository.getMovies(Calendar.getInstance().get(Calendar.YEAR), currentSorting).value
-        } else {
-            // Already sorted
         }
+    }
+
+    /**
+     * Search for movies
+     */
+    fun search(query: String) {
+        movies.value = movieRepository.search(query).value
     }
 }
