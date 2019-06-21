@@ -7,14 +7,14 @@
 
         <variable
             name="viewmodel"
-            type="com.pantaleon.imb_test.ui.main.MoviesViewModel" />
+            type="com.pantaleon.imb_test.ui.main.movielist.MoviesViewModel" />
     </data>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:context=".ui.main.MoviesFragment">
+                tools:context=".ui.main.movielist.MoviesFragment">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_view"

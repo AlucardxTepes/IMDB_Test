@@ -83,4 +83,8 @@ class MovieRepository @Inject constructor(
     }
 
     private fun isDataStale(): Boolean = true
+
+    fun insertMovie(movie: Movie) {
+        runBlocking { movieDao.insert(movie) }
+    }
 }

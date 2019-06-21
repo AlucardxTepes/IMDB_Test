@@ -121,7 +121,7 @@
             android:layout_margin="@dimen/fab_margin"
             app:layout_anchor="@id/app_bar"
             app:layout_anchorGravity="bottom|end"
-            app:srcCompat="@android:drawable/btn_star" />
+            app:srcCompat="@android:drawable/btn_star_big_off" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

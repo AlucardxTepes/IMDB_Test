@@ -1,7 +1,8 @@
-package com.pantaleon.imb_test.ui.main
+package com.pantaleon.imb_test.ui.main.movielist
 
 import androidx.lifecycle.ViewModel
 import com.pantaleon.imb_test.data.MovieRepository
+import com.pantaleon.imb_test.data.model.Movie
 import java.util.*
 
 class MoviesViewModel(private val movieRepository: MovieRepository) : ViewModel() {
@@ -28,5 +29,16 @@ class MoviesViewModel(private val movieRepository: MovieRepository) : ViewModel(
      */
     fun search(query: String) {
         movies.value = movieRepository.search(query).value
+    }
+
+    /**
+     * Sets movie as favorite
+     */
+    fun addFavoriteMovie(movie: Movie) {
+        movieRepository.insertMovie(movie)
+    }
+
+    fun fetchData() {
+        movies.value = movieRepository.getMovies(Calendar.getInstance().get(Calendar.YEAR), currentSorting).value
     }
 }

@@ -1,4 +1,4 @@
-package com.pantaleon.imb_test.ui.main
+package com.pantaleon.imb_test.ui.main.movielist
 
 import android.graphics.Color
 import android.graphics.PorterDuff
@@ -57,6 +57,11 @@ class MoviesFragment : Fragment(), MovieItemActionDelegate {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.fetchData()
+    }
+
     override fun onMovieClicked(movie: Movie) {
         val action = MoviesFragmentDirections.toMovieDetail(
             movie.id.toInt(),
@@ -64,6 +69,14 @@ class MoviesFragment : Fragment(), MovieItemActionDelegate {
             movie.backdropPath ?: movie.posterPath ?: ""
         )
         findNavController().navigate(action)
+    }
+
+    /**
+     * Toggle favorite status for selected movie
+     */
+    override fun onFavoriteButtonClicked(movie: Movie) {
+        movie.isFavorite = !movie.isFavorite
+        viewModel.addFavoriteMovie(movie)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -134,4 +147,5 @@ class MoviesFragment : Fragment(), MovieItemActionDelegate {
 
 interface MovieItemActionDelegate {
     fun onMovieClicked(movie: Movie)
+    fun onFavoriteButtonClicked(movie: Movie)
 }

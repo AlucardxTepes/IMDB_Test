@@ -1,4 +1,4 @@
-package com.pantaleon.imb_test.ui.main
+package com.pantaleon.imb_test.ui.main.movielist
 
 import android.view.LayoutInflater
 import android.view.View
@@ -19,7 +19,13 @@ class MovieListAdapter(private val actionDelegate: MovieItemActionDelegate) : Re
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        return MovieViewHolder(inflater.inflate(R.layout.movie_item, parent, false))
+        return MovieViewHolder(
+            inflater.inflate(
+                R.layout.movie_item,
+                parent,
+                false
+            )
+        )
     }
 
     override fun getItemCount(): Int = data.size
@@ -28,6 +34,10 @@ class MovieListAdapter(private val actionDelegate: MovieItemActionDelegate) : Re
         holder.bind(data[position])
         holder.itemView.setOnClickListener {
             actionDelegate.onMovieClicked(data[position])
+        }
+        holder.itemView.favoriteIcon.setOnClickListener {
+            actionDelegate.onFavoriteButtonClicked(data[position])
+            notifyItemChanged(position)
         }
     }
 
@@ -46,6 +56,8 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             title.text = movie.title
             rating.text = movie.voteAverage.toString()
             ratingBar.rating = movie.voteAverage / 2
+
+            // load poster placeholder if real poster is unavailable
             if (movie.posterPath != null) {
                 Glide.with(context)
                     .load(IMDB_BASE_IMAGE_URL + "/w200" + movie.posterPath)
@@ -55,6 +67,14 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                     .load(context.getDrawable(R.drawable.movie_placeholder))
                     .into(movieImageView)
             }
+
+            // Set favorite icon
+            if (movie.isFavorite) {
+                favoriteIcon.setImageResource(android.R.drawable.star_big_on)
+            } else {
+                favoriteIcon.setImageResource(android.R.drawable.star_big_off)
+            }
+
         }
     }
 }

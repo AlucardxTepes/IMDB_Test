@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty
 @Entity
 data class Movie(
     @PrimaryKey val id: Long,
-    @JsonIgnore val isFavorite: Boolean,
+    @JsonIgnore var isFavorite: Boolean,
     val title: String,
     val overview: String,
     val popularity: Float,

@@ -1,4 +1,4 @@
-package com.pantaleon.imb_test.ui.main
+package com.pantaleon.imb_test.ui.main.movielist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

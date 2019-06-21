@@ -62,12 +62,26 @@ class MovieDetailActivity : AppCompatActivity() {
             popularity.text = "Popularity: ${it.popularity}"
             releaseDate.text = "Release Date: ${it.releaseDate}"
             ratingBar.rating = it.voteAverage/2
-
         })
-        // TODO: Make FAB save movie as favorite
+
+        viewModel.isFavorite.observe(this, Observer {
+            // Set favorite icon
+            if (it) {
+                fab.setImageResource(android.R.drawable.star_big_on)
+            } else {
+                fab.setImageResource(android.R.drawable.star_big_off)
+            }
+        })
+
+        // Make FAB saves movie as favorite
         fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+            viewModel.toggleFavorite()
+            val msg = if (viewModel.movie.value?.isFavorite!!) {
+                "Added to favorites"
+            } else {
+                "Removed from favorites"
+            }
+            Snackbar.make(view, msg, Snackbar.LENGTH_LONG).show()
         }
     }
 }
