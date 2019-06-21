@@ -87,4 +87,17 @@ class MovieRepository @Inject constructor(
     fun insertMovie(movie: Movie) {
         runBlocking { movieDao.insert(movie) }
     }
+
+    /**
+     * Gets list of movies marked as favorite
+     */
+    fun getFavoriteMovies(): MutableLiveData<List<Movie>> {
+        val data = MutableLiveData<List<Movie>>()
+        runBlocking {
+            println("========= Fetching data from LOCAL DATABASE favorites only ============")
+            data.value = movieDao.getMarkedAsFavorite()
+            data.value?.forEach(::println)
+        }
+        return data
+    }
 }

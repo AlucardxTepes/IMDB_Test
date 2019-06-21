@@ -17,7 +17,11 @@
         android:id="@+id/favoritesFragment"
         android:name="com.pantaleon.imb_test.ui.main.favorites.FavoritesFragment"
         android:label="fragment_favorites"
-        tools:layout="@layout/fragment_favorites" />
+        tools:layout="@layout/fragment_favorites" >
+        <action
+            android:id="@+id/toMovieDetailFromFavorites"
+            app:destination="@id/movieDetailActivity" />
+    </fragment>
     <activity
         android:id="@+id/movieDetailActivity"
         android:name="com.pantaleon.imb_test.ui.main.moviedetail.MovieDetailActivity"
