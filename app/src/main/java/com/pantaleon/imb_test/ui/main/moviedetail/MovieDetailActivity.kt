@@ -45,7 +45,7 @@ class MovieDetailActivity : AppCompatActivity() {
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(MovieDetailViewModel::class.java)
         binding.lifecycleOwner = this
         binding.viewmodel = viewModel
-        
+
         viewModel.movie.observe(this, Observer {
             if (movieBackdropPath.isEmpty()) {
                 Glide.with(this)
@@ -60,7 +60,7 @@ class MovieDetailActivity : AppCompatActivity() {
             overview.text = it.overview
             voteCount.text = "Total Votes: ${it.voteCount}"
             popularity.text = "Popularity: ${it.popularity}"
-            releaseDate.text = it.releaseDate
+            releaseDate.text = "Release Date: ${it.releaseDate}"
             ratingBar.rating = it.voteAverage/2
 
         })

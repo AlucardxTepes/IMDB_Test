@@ -15,8 +15,13 @@ interface MovieDao {
     @Query("SELECT * FROM Movie WHERE id = :id ")
     suspend fun findById(id: Int): Movie
 
-    @Query("SELECT * FROM Movie WHERE releaseDate LIKE :year || '%' ORDER BY :sort DESC")
-    suspend fun getMovies(year: Int, sort: String = "popularity"): List<Movie>
+    @Query("SELECT * FROM Movie WHERE releaseDate LIKE :year || '%' ORDER BY CASE :sort " +
+            "WHEN 'popularity' THEN popularity " +
+            "WHEN 'title' THEN title " +
+            "WHEN 'rating' THEN voteAverage " +
+            "WHEN 'release date' THEN releaseDate " +
+            "END DESC")
+    suspend fun getMovies(year: Int, sort: String = "\"popularity"): List<Movie>
 
     @Insert(onConflict = REPLACE)
     suspend fun insert(movie: Movie)

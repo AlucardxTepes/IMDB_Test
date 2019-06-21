@@ -36,7 +36,7 @@ class MovieRepository @Inject constructor(
                     movieDao.insert(it)
                 }
             } else {
-                println("========= Fetching data from LOCAL DATABASE ============")
+                println("========= Fetching data from LOCAL DATABASE sort by ${sorting.toLowerCase()}============")
                 data.value = movieDao.getMovies(year, sorting.toLowerCase())
                 data.value?.forEach(::println)
             }
