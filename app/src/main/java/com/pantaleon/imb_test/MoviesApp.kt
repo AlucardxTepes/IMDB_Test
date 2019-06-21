@@ -18,7 +18,7 @@ class MoviesApp : Application() {
     override fun onCreate() {
         super.onCreate()
         component = DaggerApplicationComponent.builder()
-            .networkModule(NetworkModule())
+            .networkModule(NetworkModule(this))
             .databaseModule(DatabaseModule(this))
             .build()
     }

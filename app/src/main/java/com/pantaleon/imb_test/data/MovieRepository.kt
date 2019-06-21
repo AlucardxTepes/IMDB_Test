@@ -1,5 +1,6 @@
 package com.pantaleon.imb_test.data
 
+import android.net.ConnectivityManager
 import androidx.lifecycle.MutableLiveData
 import com.pantaleon.imb_test.data.model.Movie
 import com.pantaleon.imb_test.network.MovieApi
@@ -12,7 +13,8 @@ const val DATA_STALE_TIME = 0 // TODO
 @Singleton
 class MovieRepository @Inject constructor(
     private val movieApi: MovieApi,
-    private val movieDao: MovieDao
+    private val movieDao: MovieDao,
+    private val connectivityManager: ConnectivityManager
 ) {
 
     /**
@@ -23,7 +25,7 @@ class MovieRepository @Inject constructor(
 
 
         runBlocking {
-            if (isDbEmpty()) { // TODO Check if local data is stale
+            if (isDbEmpty() && isNetworkAvailable()) { // TODO Check if local data is stale
                 data.value = movieApi.findMoviesByYear(year, "${sorting.toLowerCase()}.desc").results
                 // TODO: Handle error case and loading icon
                 println("========= Fetching data from REMOTE API ============")
@@ -53,6 +55,14 @@ class MovieRepository @Inject constructor(
             data.value?.forEach(::println)
         }
         return data
+    }
+
+    /**
+     * Check if internet connectivity is available
+     */
+    private fun isNetworkAvailable(): Boolean {
+        val networkInfo = connectivityManager.activeNetworkInfo
+        return networkInfo != null && networkInfo.isConnected
     }
 
     /**

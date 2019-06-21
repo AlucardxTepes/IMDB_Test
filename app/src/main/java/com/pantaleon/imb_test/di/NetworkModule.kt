@@ -1,5 +1,8 @@
 package com.pantaleon.imb_test.di
 
+import android.app.Application
+import android.content.Context
+import android.net.ConnectivityManager
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.pantaleon.imb_test.network.MovieApi
@@ -17,7 +20,7 @@ const val IMDB_BASE_URL = "https://api.themoviedb.org/3/"
 const val IMDB_BASE_IMAGE_URL = "https://image.tmdb.org/t/p"
 
 @Module
-class NetworkModule {
+class NetworkModule(val application: Application) {
 
     @Reusable
     @Provides
@@ -51,4 +54,10 @@ class NetworkModule {
     @Reusable
     @Provides
     fun provideMovieApi(rf: Retrofit) = rf.create(MovieApi::class.java)
+
+    @Reusable
+    @Provides
+    fun provideConnectivityManager(): ConnectivityManager {
+        return application.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+    }
 }
