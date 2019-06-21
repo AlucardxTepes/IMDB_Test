@@ -34,8 +34,8 @@ class MovieListAdapter(private val actionDelegate: MovieItemActionDelegate) : Re
     /**
      * Function used by databinding to set data from the view
      */
-    override fun setData(movies: List<Movie>) {
-        data = movies
+    override fun setData(data: List<Movie>) {
+        this.data = data
         notifyDataSetChanged()
     }
 }
