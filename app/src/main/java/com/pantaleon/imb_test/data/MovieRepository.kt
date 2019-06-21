@@ -23,7 +23,6 @@ class MovieRepository @Inject constructor(
     fun getMovies(year: Int, sorting: String = "popularity"): MutableLiveData<List<Movie>> {
         val data = MutableLiveData<List<Movie>>()
 
-
         runBlocking {
             if (isDbEmpty() && isNetworkAvailable()) { // TODO Check if local data is stale
                 data.value = movieApi.findMoviesByYear(year, "${sorting.toLowerCase()}.desc").results
@@ -44,6 +43,13 @@ class MovieRepository @Inject constructor(
         }
 
         return data
+    }
+
+    fun findOne(movieId: Int): Movie {
+        println("========= Fetching data from LOCAL DATABASE movie ID: $movieId ============")
+        return runBlocking {
+            movieDao.findById(movieId)
+        }
     }
 
     fun search(query: String): MutableLiveData<List<Movie>> {

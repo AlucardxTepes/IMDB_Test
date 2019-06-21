@@ -12,6 +12,9 @@ interface MovieDao {
     @Query("SELECT * FROM Movie LIMIT 1")
     suspend fun dbCheck(): Movie
 
+    @Query("SELECT * FROM Movie WHERE id = :id ")
+    suspend fun findById(id: Int): Movie
+
     @Query("SELECT * FROM Movie WHERE releaseDate LIKE :year || '%' ORDER BY :sort DESC")
     suspend fun getMovies(year: Int, sort: String = "popularity"): List<Movie>
 
