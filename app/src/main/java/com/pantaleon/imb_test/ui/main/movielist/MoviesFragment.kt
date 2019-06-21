@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -15,6 +16,7 @@ import com.pantaleon.imb_test.MoviesApp
 import com.pantaleon.imb_test.R
 import com.pantaleon.imb_test.data.model.Movie
 import com.pantaleon.imb_test.databinding.FragmentMoviesBinding
+import kotlinx.android.synthetic.main.fragment_movies.*
 import kotlinx.android.synthetic.main.fragment_movies.view.*
 import javax.inject.Inject
 
@@ -55,6 +57,13 @@ class MoviesFragment : Fragment(), MovieItemActionDelegate {
             adapter = MovieListAdapter(this@MoviesFragment)
             layoutManager = GridLayoutManager(context, resources.getInteger(R.integer.movie_grid_columns))
         }
+        // Init refreshView
+        refreshLayout.setOnRefreshListener {
+            viewModel.fetchData(true)
+        }
+        viewModel.reloading.observe(this, Observer {
+            refreshLayout.isRefreshing = it
+        })
     }
 
     override fun onResume() {
@@ -107,12 +116,12 @@ class MoviesFragment : Fragment(), MovieItemActionDelegate {
             val builder = AlertDialog.Builder(context!!)
 
             // Populate search options
-            val arrayAdapter = ArrayAdapter<String>(context, android.R.layout.simple_list_item_1)
+            val arrayAdapter = ArrayAdapter<String>(context!!, android.R.layout.simple_list_item_1)
             arrayAdapter.addAll("Popularity", "Title", "Rating", "Release Date")
 
             builder.setTitle(getString(R.string.action_sort))
             builder.setAdapter(arrayAdapter) { _, which ->
-                viewModel.sortBy(arrayAdapter.getItem(which))
+                viewModel.sortBy(arrayAdapter.getItem(which)!!)
             }
             sortDialog = builder.show()
         } else {

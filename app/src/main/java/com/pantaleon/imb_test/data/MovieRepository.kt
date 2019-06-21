@@ -20,28 +20,34 @@ class MovieRepository @Inject constructor(
     /**
      * Retrieves latest movies for current year, sorted by popularity by default
      */
-    fun getMovies(year: Int, sorting: String = "popularity"): MutableLiveData<List<Movie>> {
+    fun getMovies(year: Int, sorting: String = "popularity", forceRefresh: Boolean = false): MutableLiveData<List<Movie>> {
         val data = MutableLiveData<List<Movie>>()
 
         runBlocking {
-            if (isDbEmpty() && isNetworkAvailable()) { // TODO Check if local data is stale
-                data.value = movieApi.findMoviesByYear(year, "${sorting.toLowerCase()}.desc").results
-                // TODO: Handle error case and loading icon
-                println("========= Fetching data from REMOTE API ============")
-                data.value?.forEach(::println)
-
-                // Store remote data into local db
-                data.value?.forEach {
-                    println("========= Storing fetched data into LOCAL DATABASE ============")
-                    movieDao.insert(it)
-                }
+            // TODO Check if local data is stale
+            if ((forceRefresh || isDbEmpty()) && isNetworkAvailable()) {
+                data.value = fetchFromRemote(year, sorting).value
             } else {
                 println("========= Fetching data from LOCAL DATABASE sort by ${sorting.toLowerCase()}============")
                 data.value = movieDao.getMovies(year, sorting.toLowerCase())
                 data.value?.forEach(::println)
             }
         }
+        return data
+    }
 
+    private suspend fun fetchFromRemote(year: Int, sorting: String = "popularity"): MutableLiveData<List<Movie>> {
+        val data = MutableLiveData<List<Movie>>()
+        data.value = movieApi.findMoviesByYear(year, "${sorting.toLowerCase()}.desc").results
+        // TODO: Handle error case and loading icon
+        println("========= Fetching data from REMOTE API ============")
+        data.value?.forEach(::println)
+
+        // Store remote data into local db
+        data.value?.forEach {
+            println("========= Storing fetched data into LOCAL DATABASE ============")
+            movieDao.insert(it)
+        }
         return data
     }
 

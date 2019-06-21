@@ -26,7 +26,7 @@ interface MovieDao {
     @Insert(onConflict = REPLACE)
     suspend fun insert(movie: Movie)
 
-    @Query("SELECT * FROM MOVIE WHERE isFavorite = 1")
+    @Query("SELECT * FROM MOVIE WHERE isFavorite ")
     suspend fun getMarkedAsFavorite(): List<Movie>
 
 }

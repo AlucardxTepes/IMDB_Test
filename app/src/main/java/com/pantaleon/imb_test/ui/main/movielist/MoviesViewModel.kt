@@ -1,5 +1,6 @@
 package com.pantaleon.imb_test.ui.main.movielist
 
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import com.pantaleon.imb_test.data.MovieRepository
 import com.pantaleon.imb_test.data.model.Movie
@@ -8,6 +9,7 @@ import java.util.*
 class MoviesViewModel(private val movieRepository: MovieRepository) : ViewModel() {
 
     var movies = movieRepository.getMovies(Calendar.getInstance().get(Calendar.YEAR))
+    var reloading = MediatorLiveData<Boolean>()
 
     // This value is set from the activity's menu item dialog "sort". Changing it will trigger the sortBy function
     private var currentSorting = "popularity"
@@ -38,7 +40,9 @@ class MoviesViewModel(private val movieRepository: MovieRepository) : ViewModel(
         movieRepository.insertMovie(movie)
     }
 
-    fun fetchData() {
-        movies.value = movieRepository.getMovies(Calendar.getInstance().get(Calendar.YEAR), currentSorting).value
+    fun fetchData(forceRefresh: Boolean = false) {
+        reloading.value = true
+        movies.value = movieRepository.getMovies(Calendar.getInstance().get(Calendar.YEAR), currentSorting, forceRefresh).value
+        reloading.value = false
     }
 }
